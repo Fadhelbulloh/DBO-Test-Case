@@ -10,25 +10,27 @@ func RegisterRoutes(r *gin.Engine) {
 	// Auth routes
 	auth := r.Group("/auth")
 	{
-		auth.POST("/login", nil)
-		auth.POST("/register", nil)
+		auth.POST("/login", controllers.Login)
+		auth.POST("/register", controllers.Register)
 	}
 
 	// Customer routes
 	customers := r.Group("/customers", middleware.AuthMiddleware)
 	{
 		customers.GET("/", controllers.GetCustomers)
+		customers.GET("/:id", controllers.GetCustomerDetail)
 		customers.POST("/", controllers.AddCustomer)
-		customers.PUT("/:id", nil)
-		customers.DELETE("/:id", nil)
+		customers.PUT("/:id", controllers.UpdateCustomer)
+		customers.DELETE("/:id", controllers.DeleteCustomer)
 	}
 
 	//Order routes
 	orders := r.Group("/orders", middleware.AuthMiddleware)
 	{
-		orders.GET("/", nil)
-		orders.POST("/", nil)
-		orders.PUT("/:id", nil)
-		orders.DELETE("/:id", nil)
+		orders.GET("/", controllers.GetOrders)
+		orders.GET("/:id", controllers.GetOrderDetail)
+		orders.POST("/", controllers.AddOrder)
+		orders.PUT("/:id", controllers.UpdateOrder)
+		orders.DELETE("/:id", controllers.DeleteOrder)
 	}
 }

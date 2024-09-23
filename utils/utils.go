@@ -1,10 +1,12 @@
 package utils
 
 import (
+	"log"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/Fadhelbulloh/DBO-Test-Case/params"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -35,4 +37,26 @@ func ValidateToken(tokenString string) (*jwt.Token, error) {
 		}
 		return os.Getenv("JWT_SECRET"), nil
 	})
+}
+
+// ReturnErrorTemplate returns error template
+func ReturnErrorTemplate(err error, message string) map[string]interface{} {
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println("error :" + message)
+	}
+	return map[string]interface{}{
+		"status": "failed",
+		"data":   message,
+	}
+}
+
+// ReturnSuccessTemplate returns success template
+func ReturnSuccessTemplate(data interface{}, pagination ...params.Pagination) map[string]interface{} {
+	return map[string]interface{}{
+		"status":     "success",
+		"data":       data,
+		"pagination": pagination,
+	}
 }
